@@ -1,0 +1,91 @@
+				/** Test 1
+			button 1 will turn on the led
+			button 2 will turn off the led
+			if led 2 is on and nothing is pressed, there is a bug
+			**/
+			/*	union bit{
+					uint8_t eightbit;
+					struct{
+						bool bit0;
+						bool bit1;
+						bool bit2;
+						bool bit3;
+						bool bit4;
+						bool bit5;
+						bool bit6;
+						bool bit7;
+					}bits;
+				};
+				bool button1;
+				bool button2;*/
+			//	union bit port;
+			//port.eightbit=(uint8_t)P1->IN;
+			
+			//button1=port.bits.bit1;
+			//button2=port.bits.bit4;
+			
+	/** Test 2
+	
+	while(1){
+		int i = 10000; //random value
+		//binary 00010010
+		while(P1->IN==(uint8_t)0x12){} //do nothing while it is “1”
+		while(i > 0){i--;} //delay loop
+		if(P1->IN==(uint8_t)0x12){ //still “1”: go back to waiting
+		continue;
+		}else{
+		//real press: do stuff
+			P2->OUT=0x01; //if this is on and nothing is pressed, it didn't work
+			//binary 00010000
+			if(P1->IN==(uint8_t)0x10){
+				P1->OUT=0x01;
+				//binary 00000010
+			}else if(P1->IN==(uint8_t)0x2){
+				P1->OUT=0x00;
+			}
+		}
+	
+	}
+	**/
+	/**
+	while(1){
+		int i = 10000; //random value
+		//binary 00010010
+		while(P1->IN==(uint8_t)0x12){} //do nothing while it is “1”
+		while(i > 0){i--;} //delay loop
+		if(P1->IN==(uint8_t)0x12){ //still “1”: go back to waiting
+		continue;
+		}else{
+			//debugging	P2->OUT=P1->IN;
+		//real press: do stuff
+			//binary 00010000
+			if(P1->IN==(uint8_t)0x10){
+				toggleRed=!toggleRed;
+			}else if(P1->IN==(uint8_t)0x2){
+			//if on RED LED toggle on/off
+				if(toggleRed){
+					if(P1->OUT==(uint8_t)0x1){
+						P1->OUT=(uint8_t)0x0;
+					}else{
+						P1->OUT=(uint8_t)0x1;
+					}
+				}else{
+						//if on RGB LED switch states
+					switch(P2->OUT){
+						case 0x0: P2->OUT=0x1;
+						case 0x1: P2->OUT=0x2;
+						case 0x2: P2->OUT=0x3;
+						case 0x3: P2->OUT=0x4;
+						case 0x4: P2->OUT=0x5;
+						case 0x5: P2->OUT=0x6;
+						case 0x6: P2->OUT=0x7;
+						case 0x7: P2->OUT=0x0;
+					}
+					
+				}
+
+			}
+		}
+	
+	}
+	**/

@@ -1,0 +1,11 @@
+		/* cannot do this for debouncing
+		if((P1IN&0x12)){ //check pin
+			P1IFG&=(uint8_t)~0x12; //clear flags if any
+			return; //buttons were not actually pressed
+		}
+		while(delay>0){delay--;}
+		if((P1IN&0x12)){ //check pin again
+			P1IFG&=(uint8_t)~0x12; //clear flags if any
+			return; //buttons were not actually pressed
+		}*/
+	
