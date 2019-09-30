@@ -33,10 +33,11 @@ int main(){
 	TA0CTL&=(uint16_t)(~((1<<5)|(1<<4))); //stop clock
 	TA0CTL&=(uint16_t)(~(1<<9));
 	TA0CTL|=(uint16_t)((1<<8));  //A CLK 2 seconds per interupt 
-	TA0CCR0=(uint16_t)((0xFFF-0x01)/2); //divide 2^16-1 by 2
+	TA0CCR0=(uint16_t)((0xFFFF-0x01)/2); //divide 2^16-1 by 2
 	TA0CTL&=(uint16_t)(~(1<<0)); //clear any existing flags
 	TA0CTL|=(uint16_t)((1<<1)); //toggle interrupt behavior
 	
+	NVIC_SetPriority(TA0_N_IRQn,2);
 	NVIC_EnableIRQ(TA0_N_IRQn);
 		__ASM("CPSIE I");
 	while(1){
@@ -62,13 +63,13 @@ void PORT1_IRQHandler(void){
 	}else if((P1IFG&(uint8_t)0x10)){
 		//button 2 was pressed
 		P1IFG&=(uint8_t)~0x10; //clear flag
-		//	TA0CTL^=(uint16_t)((1<<4));
+		TA0CTL^=(uint16_t)((1<<4)); //toggle mode from halt to ACLK
 	}
 }
+
 void TA0_N_IRQHandler(void){
 	//clear interrupt flag
 	TA0CTL&=(uint16_t)(~(1<<0));
-	//P1OUT^=0x01; debugging
 		if(toggle==0x00){
 			P1OUT^=0x01;
 		}else if (toggle==0x01){
